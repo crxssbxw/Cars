@@ -69,6 +69,8 @@
                     HorizontalAlignment="Left"
                     Text="Поиск"/>
                 <TextBox
+                    x:Name="ServicesSearch"
+                    TextChanged="ServicesSearch_TextChanged"
                     Margin="10 0"
                     Width="100"/>
 

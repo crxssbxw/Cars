@@ -1,4 +1,5 @@
-﻿using Cars.ViewModels;
+﻿using Cars.Models;
+using Cars.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,21 @@ namespace Cars.Views
             InitializeComponent();
             ServiceTable.DataContext = ServiceViewModel;
             AddButton.DataContext = ServiceViewModel;
+        }
+
+        private void ServicesSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchString = ServicesSearch.Text.ToLower();
+            if (searchString == string.Empty) ServiceViewModel.CollectionView.Filter = (a) => true;
+            else
+            {
+                ServiceViewModel.CollectionView.Filter = (a) =>
+                {
+                    var b = (Service)a;
+                    return
+                    b.ServiceType.ToLower().Contains(searchString);
+                };
+            }
         }
     }
 }

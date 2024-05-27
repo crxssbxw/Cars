@@ -37,6 +37,8 @@
                 HorizontalAlignment="Center"
                 Text="Поиск"/>
             <TextBox
+                x:Name="ServiceCentersSearch"
+                TextChanged="ServiceCentersSearch_TextChanged"
                 Grid.Row="1"/>
             <DataGrid
                 IsReadOnly="True"
@@ -91,6 +93,8 @@
                 HorizontalAlignment="Center"
                 Text="Поиск"/>
             <TextBox
+                x:Name="ServicesSearch"
+                TextChanged="ServicesSearch_TextChanged"
                 Grid.Row="1"/>
             <DataGrid
                 IsReadOnly="True"
