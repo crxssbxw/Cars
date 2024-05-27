@@ -1,0 +1,91 @@
+﻿<Window x:Class="Cars.Views.UserAuthorization"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cars.Views"
+        mc:Ignorable="d"
+        Title="Авторизация" 
+        MinHeight="320" MinWidth="350" 
+        Width="350"
+        MaxHeight="600" MaxWidth="700"
+        SizeToContent="Height" Icon="/Images/autoservice-logo.png" 
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+            <Style TargetType="PasswordBox">
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border
+            Margin="5"
+            BorderBrush="Black"
+            BorderThickness="2"
+            CornerRadius="10">
+            <DockPanel>
+                <Image
+                    Margin="10"
+                    Source="/Images/autoservice-logo.png"
+                    MaxHeight="100"/>
+                <TextBlock
+                    FontSize="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold"
+                    TextWrapping="Wrap"
+                    Text="Единая система управления автосервисами"/>
+            </DockPanel>
+        </Border>
+
+        <StackPanel
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Stretch"
+            Margin="50">
+            <TextBlock
+                HorizontalAlignment="Center"
+                Text="Логин"/>
+            <TextBox
+                x:Name="LoginField"
+                Margin="10"
+                Text="{Binding Path=Login, Mode=OneWayToSource}"/>
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Text="Пароль"/>
+            <PasswordBox
+                x:Name="PasswordField"
+                Margin="10 10 10 0"
+                PasswordChanged="PasswordField_PasswordChanged"/>
+            <TextBlock
+                Margin="10 0"
+                FontSize="12"
+                TextWrapping="Wrap"
+                Text="{Binding Path=PasswordErrorMessage}"/>
+
+            <Button
+                x:Name="LoginButton"
+                Click="LoginButtonClick"
+                IsDefault="True"
+                HorizontalAlignment="Center"
+                Margin="10"
+                Padding="20 0"
+                Content="Вход"/>
+        </StackPanel>
+    </Grid>
+</Window>

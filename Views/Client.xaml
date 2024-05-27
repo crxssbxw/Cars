@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="Cars.Views.Client"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cars.Views"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock 
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                Text="Поиск"/>
+            <TextBox
+                Grid.Row="1"/>
+            <DataGrid
+                IsReadOnly="True"
+                Grid.Row="2"
+                x:Name="ServiceCenterTable"
+                ItemsSource="{Binding CollectionView}"
+                ColumnWidth="*"
+                AutoGenerateColumns="False"
+                VerticalScrollBarVisibility="Auto"
+                SelectedItem="{Binding SelectedServiceCenter}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn 
+                        Binding="{Binding Path=FirmName}"
+                        Header="Фирма"/>
+                    <DataGridTextColumn 
+                        Binding="{Binding Path=CenterName}"
+                        Header="Название"/>
+                    <DataGridTextColumn 
+                        Binding="{Binding Path=City}"
+                        Header="Город"/>
+                    <DataGridTextColumn 
+                        Binding="{Binding Path=Street}"
+                        Header="Улица"/>
+                    <DataGridTextColumn 
+                        Width="auto"
+                        Binding="{Binding Path=Building}"
+                        Header="Здание"/>
+                    <DataGridTextColumn 
+                        Binding="{Binding Path=CarsAmount}"
+                        Width="auto"
+                        Header="Кол-во автомобилей"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <GridSplitter 
+            Width="3"
+            Grid.Column="1"
+            ShowsPreview="False"
+            ResizeBehavior="PreviousAndNext"/>
+
+        <Grid
+            Margin="5"
+            Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock 
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                Text="Поиск"/>
+            <TextBox
+                Grid.Row="1"/>
+            <DataGrid
+                IsReadOnly="True"
+                Grid.Row="2"
+                x:Name="ServiceTable"
+                ItemsSource="{Binding CollectionView}"
+                SelectedItem="{Binding SelectedService}"
+                ColumnWidth="*"
+                AutoGenerateColumns="False"
+                VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn 
+                        Binding="{Binding ServiceType}"
+                        Header="Услуга"/>
+                    <DataGridTextColumn
+                        Binding="{Binding Cost, StringFormat={}{0:N2}}"
+                        Width="0.2*"
+                        Header="Цена"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

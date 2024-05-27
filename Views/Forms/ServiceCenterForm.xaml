@@ -1,0 +1,93 @@
+﻿<Window x:Class="Cars.Views.Forms.ServiceCenterForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cars.Views.Forms"
+        mc:Ignorable="d"
+        Title="ServiceCenterForm" 
+        SizeToContent="Height"
+        MinHeight="250" MinWidth="350" MaxWidth="400"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Width" Value="120"/>
+                <Setter Property="Padding" Value="5 0"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+
+        <Image
+            Grid.Row="0"
+            Source="/Images/autoservice-logo.png"
+            MaxWidth="75"/>
+
+        <StackPanel 
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            Margin="10">
+            <TextBlock
+                Text="Фирма"/>
+            <TextBox
+                Text="{Binding FirmName}"/>
+            <TextBlock
+                Text="Название"/>
+            <TextBox
+                Text="{Binding CenterName}"/>
+            <TextBlock
+                Text="Город"/>
+            <TextBox
+                Text="{Binding City}"/>
+            <TextBlock
+                Text="Улица"/>
+            <TextBox
+                Text="{Binding Street}"/>
+            <TextBlock
+                Text="Здание"/>
+            <TextBox
+                Text="{Binding Building}"/>
+            <TextBlock
+                Text="Количество автомобилей"/>
+            <TextBox
+                Text="{Binding CarsAmount}"/>
+        </StackPanel>
+
+        <DockPanel 
+            HorizontalAlignment="Center"
+            Grid.Row="2">
+            <Button 
+                BorderThickness="0"
+                Background="#E0A9AF"
+                x:Name="CancelButton"
+                IsCancel="True"
+                Content="Отмена"
+                Click="CancelButton_Click"/>
+            <Button 
+                BorderThickness="0"
+                Background="#B5D5CA"
+                x:Name="AddButton"
+                IsDefault="True"
+                Content="Добавить"
+                Click="AddButton_Click"/>
+        </DockPanel>
+    </Grid>
+</Window>

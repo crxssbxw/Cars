@@ -1,0 +1,9 @@
+﻿<Application x:Class="Cars.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Cars"
+             StartupUri="/Views/UserAuthorization.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>

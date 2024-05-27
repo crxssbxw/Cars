@@ -1,0 +1,559 @@
+﻿<UserControl x:Class="Cars.Views.Admin"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cars.Views"
+             xmlns:converters="clr-namespace:Cars.Converters"
+             xmlns:forms="clr-namespace:Cars.Views.Forms"
+             xmlns:viewmodels="clr-namespace:Cars.ViewModels" 
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:DateOnlyConverter x:Key="DateConverter"/>
+
+        <DataTemplate x:Key="ContractsList">
+            <Expander>
+                <Expander.Header>
+                    <TextBlock Text="{Binding ContractId, StringFormat=Сделка №{0}}"/>
+                </Expander.Header>
+                <StackPanel>
+                    <TextBlock
+                        Text="{Binding ConclusionDate, StringFormat=Дата заключения {0}}"/>
+                </StackPanel>
+            </Expander>
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="ContractsPanel">
+            <StackPanel/>
+        </ItemsPanelTemplate>
+
+        <DataTemplate x:Key="CarsList">
+            <StackPanel
+                DataContext="{Binding Car}">
+                <TextBlock
+                    Text="{Binding Serial}"/>
+                <TextBlock
+                    Text="{Binding CarNum}"/>
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="ServiceList">
+            <StackPanel
+                DataContext="{Binding Service}">
+                <TextBlock
+                    Text="{Binding ServiceType}"/>
+                <TextBlock
+                    Text="{Binding Cost, StringFormat={}{0:N2}}"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <TabControl 
+            BorderThickness="0"
+            Grid.Row="1"
+            Background="Transparent">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="FontSize" Value="18"/>
+                </Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="ColumnWidth" Value="*"/>
+                </Style>
+            </TabControl.Resources>
+
+            <TabItem
+                Background="#D1EEFC"
+                Header="Сервисные центры">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid
+                        Margin="5"
+                        Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock 
+                            HorizontalAlignment="Center"
+                            Text="Сервисные центры"/>
+                        <DataGrid
+                            IsReadOnly="True"
+                            Grid.Row="1"
+                            x:Name="ServiceCenterTable"
+                            ItemsSource="{Binding CollectionView}"
+                            ColumnWidth="*"
+                            AutoGenerateColumns="False"
+                            VerticalScrollBarVisibility="Auto"
+                            SelectedItem="{Binding SelectedServiceCenter}"
+                            SelectionChanged="ServiceCenterTable_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Path=FirmName}"
+                                    Header="Фирма"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Path=CenterName}"
+                                    Header="Название"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Path=City}"
+                                    Header="Город"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Path=Street}"
+                                    Header="Улица"/>
+                                <DataGridTextColumn 
+                                    Width="auto"
+                                    Binding="{Binding Path=Building}"
+                                    Header="Здание"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Path=CarsAmount}"
+                                    Width="auto"
+                                    Header="Кол-во автомобилей"/>
+                            </DataGrid.Columns>
+
+                            <DataGrid.ContextMenu> 
+                                <ContextMenu>
+                                    <MenuItem 
+                                        Command="{Binding Add}"
+                                        Header="Добавить"/>
+                                    <MenuItem 
+                                        Command="{Binding Edit}"
+                                        Header="Редактировать"/>
+                                    <MenuItem 
+                                        Command="{Binding Delete}"
+                                        Header="Удалить"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Grid>
+
+                    <Grid
+                        Margin="5"
+                        Grid.Row="1">
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock 
+                            HorizontalAlignment="Center"
+                            Text="Услуги"/>
+                        <DataGrid
+                            IsReadOnly="True"
+                            Grid.Row="1"
+                            x:Name="ServiceTable"
+                            ItemsSource="{Binding CollectionView}"
+                            SelectedItem="{Binding SelectedService}"
+                            ColumnWidth="*"
+                            AutoGenerateColumns="False"
+                            VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                    Binding="{Binding ServiceType}"
+                                    Header="Услуга"/>
+                                <DataGridTextColumn
+                                    Binding="{Binding Cost, StringFormat={}{0:N2}}"
+                                    Width="0.2*"
+                                    Header="Цена"/>
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem 
+                                        Command="{Binding Add}"
+                                        Header="Добавить"/>
+                                    <MenuItem 
+                                        Command="{Binding Edit}"
+                                        Header="Редактировать"/>
+                                    <MenuItem 
+                                        Command="{Binding Delete}"
+                                        Header="Удалить"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Grid>
+
+                    <Grid
+                        Margin="5"
+                        Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock 
+                            HorizontalAlignment="Center"
+                            Text="Мастера"/>
+                        <DataGrid
+                            IsReadOnly="True"
+                            Grid.Row="1"
+                            x:Name="CraftsmansTable"
+                            ItemsSource="{Binding CollectionView}"
+                            SelectedItem="{Binding SelectedCraftsman}"
+                            ColumnWidth="*"
+                            AutoGenerateColumns="False"
+                            VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                    Binding="{Binding SecondName}"
+                                    Header="Фамилия"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding FirstName}"
+                                    Header="Имя"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding MiddleName}"
+                                    Header="Отчество"/>
+                                <DataGridTextColumn 
+                                    Width="auto"
+                                    Binding="{Binding Expirience}"
+                                    Header="Опыт работы"/>
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem 
+                                        Command="{Binding Add}"
+                                        Header="Добавить"/>
+                                    <MenuItem 
+                                        Command="{Binding Edit}"
+                                        Header="Редактировать"/>
+                                    <MenuItem 
+                                        Command="{Binding Delete}"
+                                        Header="Удалить"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Grid>
+
+                    <StackPanel
+                        Margin="5"
+                        Grid.Row="0"
+                        Grid.Column="1">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="Поиск"/>
+                        <TextBox
+                            x:Name="ServiceCentersSearch"
+                            TextChanged="ServiceCentersSearch_TextChanged"/>
+                        <Button
+                            Padding="20 0"
+                            BorderThickness="0"
+                            Background="#B5D5CA"
+                            x:Name="ExportButton"
+                            Click="ExportButton_Click"
+                            HorizontalAlignment="Right"
+                            Margin="0 10"
+                            Content="Экспорт"/>
+                    </StackPanel>
+                    
+                    <StackPanel
+                        Margin="5"
+                        Grid.Row="1"
+                        Grid.Column="1">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="Поиск"/>
+                        <TextBox
+                            x:Name="ServicesSearch"
+                            TextChanged="ServicesSearch_TextChanged"/>
+                    </StackPanel>
+                    
+                    <StackPanel
+                        Margin="5"
+                        Grid.Row="2"
+                        Grid.Column="1">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="Поиск"/>
+                        <TextBox
+                            x:Name="CraftsmenSearch"
+                            TextChanged="CraftsmenSearch_TextChanged"/>
+                    </StackPanel>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem
+                Background="#E0A9AF"
+                x:Name="ContractsTab"
+                Header="Сделки">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid >
+                        <ListBox
+                            x:Name="ContractsListView"
+                            SelectedItem="{Binding SelectedContract}"
+                            ItemsSource="{Binding CollectionView}"
+                            ItemTemplate="{StaticResource ContractsList}"
+                            ItemsPanel="{StaticResource ContractsPanel}"
+                            SelectionChanged="ContractsListView_SelectionChanged"
+                            Margin="5">
+                        </ListBox>
+                    </Grid>
+
+                    <forms:ContractView
+                        DataContext="{Binding SelectedContract}"
+                        x:Name="ContractView"
+                        Grid.Column="1"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem
+                Background="#FFFCD6"
+                Header="Клиенты">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Grid
+                        Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="Клиенты"/>
+                        <DataGrid
+                            IsReadOnly="True"
+                            Grid.Row="1"
+                            x:Name="ClientTable"
+                            ItemsSource="{Binding CollectionView}"
+                            SelectedItem="{Binding SelectedClient}"
+                            SelectionChanged="ClientTable_SelectionChanged"
+                            ColumnWidth="*"
+                            AutoGenerateColumns="False"
+                            VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                    Binding="{Binding SecondName}"
+                                    Header="Фамилия"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding FirstName}"
+                                    Header="Имя"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding MiddleName}"
+                                    Header="Отчество"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding TelNumber}"
+                                    Header="Номер телефона"/>
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem 
+                                        Command="{Binding Add}"
+                                        Header="Добавить"/>
+                                    <MenuItem 
+                                        Command="{Binding Edit}"
+                                        Header="Редактировать"/>
+                                    <MenuItem 
+                                        Command="{Binding Delete}"
+                                        Header="Удалить"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Grid>
+
+                    <Grid
+                        Margin="10"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="Автомобили"/>
+                        <DataGrid
+                            IsReadOnly="True"
+                            Grid.Row="1"
+                            x:Name="CarTable"
+                            ItemsSource="{Binding CollectionView}"
+                            SelectedItem="{Binding SelectedCar}"
+                            ColumnWidth="*"
+                            AutoGenerateColumns="False"
+                            VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Serial}"
+                                    Width="auto"
+                                    Header="Серия"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding CarNum}"
+                                    Width="auto"
+                                    Header="Номер"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Manufacturer}"
+                                    Header="Производитель"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding EnginePower}"
+                                    Header="Мощность двигателя"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding PassengersAmount}"
+                                    Header="Вместительность"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Weight}"
+                                    Width="auto"
+                                    Header="Вес"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding Color}"
+                                    Width="0.5*"
+                                    Header="Цвет"/>
+                                <DataGridTextColumn 
+                                    Binding="{Binding BodyType}"
+                                    Header="Тип кузова"/>
+                                <DataGridCheckBoxColumn 
+                                    Binding="{Binding Conditioner}"
+                                    Header="Наличие кондиционера"/>
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem
+                                        Command="{Binding About}"
+                                        Header="Владельцы"/>
+                                    <MenuItem 
+                                        Command="{Binding Add}"
+                                        Header="Добавить"/>
+                                    <MenuItem 
+                                        Command="{Binding Edit}"
+                                        Header="Редактировать"/>
+                                    <MenuItem 
+                                        Command="{Binding Delete}"
+                                        Header="Удалить"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Grid.Row="2">
+                            <TextBlock
+                                Margin="5"
+                                Text="Поиск по номеру"/>
+                            <TextBox
+                                TextChanged="CarsSearch_TextChanged"
+                                Margin="5"
+                                MinWidth="200"
+                                MaxLines="1"
+                                Width="auto"
+                                x:Name="CarsSearch"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel
+                        Margin="5"
+                        Grid.Row="0"
+                        Grid.Column="1">
+                        <TextBlock
+                            Text="Поиск по фамилии и имени"
+                            HorizontalAlignment="Center"/>
+                        <TextBox
+                            TextChanged="ClientsNameSearch_TextChanged"
+                            x:Name="ClientsNameSearch"/>
+                        <TextBlock
+                            Text="Поиск по номеру телефона"
+                            HorizontalAlignment="Center"/>
+                        <TextBox
+                            TextChanged="ClientsPhoneSearch_TextChanged"
+                            x:Name="ClientsPhoneSearch"/>
+                    </StackPanel>
+                </Grid>
+
+            </TabItem>
+
+            <TabItem
+                Background="#B5D5CA"
+                Header="Пользователи">
+                <Grid
+                    Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock 
+                        HorizontalAlignment="Center"
+                        Text="Пользователи"/>
+                    <DataGrid
+                        Background="Transparent"
+                            IsReadOnly="True"
+                            Grid.Row="1"
+                            x:Name="UserTable"
+                            ItemsSource="{Binding CollectionView}"
+                            SelectedItem="{Binding SelectedUser}"
+                            ColumnWidth="*"
+                            Margin="5"
+                            AutoGenerateColumns="False"
+                            VerticalScrollBarVisibility="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                Binding="{Binding Login}"
+                                Header="Логин"/>
+                            <DataGridTextColumn 
+                                Binding="{Binding Username}"
+                                Header="Имя пользователя"/>
+                            <DataGridTextColumn 
+                                Binding="{Binding Role}"
+                                Header="Роль"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DockPanel 
+                        Grid.Row="2"
+                        Margin="5">
+                        <DockPanel.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="Margin" Value="5 0"/>
+                                <Setter Property="Padding" Value="5 0"/>
+                            </Style>
+                        </DockPanel.Resources>
+
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            Text="Поиск"/>
+                        <TextBox 
+                            Margin="10 0"
+                            MinWidth="100"/>
+
+                        <StackPanel 
+                            x:Name="ButtonsPanel"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                            <Button 
+                                BorderThickness="0"
+                                Background="#E1A9AF"
+                                Command="{Binding ResetPassword}"
+                                Content="Сбросить пароль"/>
+                            <Button 
+                                BorderThickness="0"
+                                Background="#B5D5CA"
+                                Command="{Binding Registration}"
+                                Content="Зарегистрировать"/>
+                        </StackPanel>
+
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</UserControl>
