@@ -53,6 +53,7 @@
             <TextBlock
                 Text="Цена"/>
             <TextBox
+                x:Name="CostField"
                 Text="{Binding Cost}"/>
             <TextBlock
                 Text="Сервисный центр"/>

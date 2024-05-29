@@ -34,12 +34,12 @@ namespace Cars.Views.Forms
         {
 
             var service = DataContext as CustomViewService;
-            if
-                (
-                    string.IsNullOrEmpty(service.ServiceType) ||
-                    string.IsNullOrEmpty(service.Cost.ToString())
-                )
-                throw new Exception("Не все данные были введены");
+
+            if (string.IsNullOrEmpty(service.ServiceType)) throw new Exception("Название услуги не может быть пустым");
+            if (string.IsNullOrEmpty(service.Cost.ToString())) throw new Exception("Цена не может быть пустой");
+            else if (CostField.Text.Any(c => char.IsLetter(c))) throw new Exception("Цена должна быть числом");
+            if (service.ServiceId == null) throw new Exception("Услуга должна относиться к сервисному центру");
+
             DialogResult = true;
         }
     }
